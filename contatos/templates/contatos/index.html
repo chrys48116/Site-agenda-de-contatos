@@ -2,7 +2,6 @@
 
 {% block conteudo %}
 <h1 class="mt-5">Minha agenda</h1>
-
 <table class="table">
     <thead>
         <tr>
@@ -13,30 +12,38 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>
-                <a href="#"> João</a>
-            </td>
-            <td>Miranda</td>
-            <td>35 9 5555-5555</td>
-            <td>Família</td>
-        </tr>
-        <tr>
-            <td>
-                <a href="#"> Leandro</a>
-            </td>
-            <td>Moreira</td>
-            <td>35 9 8888-5555</td>
-            <td>Família</td>
-        </tr>
-        <tr>
-            <td>
-                <a href="#"> Fátima</a>
-            </td>
-            <td>Oliveira</td>
-            <td>35 9 9999-4352</td>
-            <td>Conhecidos</td>
-        </tr>
+        {% for contato in contatos %}
+            {% if contato.mostrar %}
+                <tr>
+                    <td>
+                        <a href="{% url 'ver_contato' contato.id %}">{{ contato.nome }}</a>
+                    </td>
+                    <td>{{ contato.sobrenome }}</td>
+                    <td>{{ contato.telefone }}</td>
+                    <td>{{ contato.categoria }}</td>
+                </tr>
+            {%endif%}
+        {%endfor%}
     </tbody>
 </table>
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        {% if contatos.has_previous %}
+            <li class="page-item"><a class="page-link" href="?p=1">&laquo; Primeiro</a>
+            <li class="page-item"><a class="page-link" href="?p={{ contatos.previous_page_number }}">Anterior</a>
+        {% endif %}
+
+        {% for pagina in contatos.paginator.page_range %}
+            <li class="page-item"><a class="page-link" href="?p={{ pagina }}">{{pagina}}</a></li>
+        {%endfor%}
+
+        {% if contatos.has_next %}
+            <li class="page-item"><a class="page-link" href="?p={{ contatos.next_page_number }}">Proximo</a>
+            <li class="page-item"></li><a class="page-link" href="?p={{ contatos.paginator.num_pages }}">Ultimo &raquo;</a>
+        {% endif %}
+        
+    </ul>
+  </nav>
+
 {% endblock %}
