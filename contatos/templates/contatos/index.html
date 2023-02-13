@@ -35,7 +35,11 @@
         {% endif %}
 
         {% for pagina in contatos.paginator.page_range %}
-            <li class="page-item"><a class="page-link" href="?p={{ pagina }}">{{pagina}}</a></li>
+            {% if contatos.number == pagina %}
+                <li class="page-item active"><a class="page-link" href="?p={{ pagina }}">{{pagina}}</a></li>
+            {%else%}
+                <li class="page-item"><a class="page-link" href="?p={{ pagina }}">{{pagina}}</a></li>
+            {%endif%}
         {%endfor%}
 
         {% if contatos.has_next %}
